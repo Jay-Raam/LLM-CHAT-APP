@@ -1,4 +1,4 @@
-# Nexus AI ✦ FastAPI Python & React Streaming Platform
+# FastAPI Python & React Streaming Platform
 
 [![CI](https://github.com/Jay-Raam/LLM-CHAT-APP/actions/workflows/ci.yml/badge.svg)](https://github.com/Jay-Raam/LLM-CHAT-APP/actions/workflows/ci.yml)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.95+-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
