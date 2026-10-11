@@ -1,111 +1,91 @@
-# Nexus AI Chat
+# Nexus AI ✦ FastAPI Python & React Streaming Platform
 
-Lightweight AI chat application with a FastAPI backend and a React + Vite frontend.
+[![CI](https://github.com/Jay-Raam/LLM-CHAT-APP/actions/workflows/ci.yml/badge.svg)](https://github.com/Jay-Raam/LLM-CHAT-APP/actions/workflows/ci.yml)
+[![FastAPI](https://img.shields.io/badge/FastAPI-0.95+-009688?logo=fastapi)](https://fastapi.tiangolo.com/)
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python)](https://www.python.org/)
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react)](https://react.dev/)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)](https://www.docker.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## Summary
+High-performance, asynchronous AI conversational platform featuring an asynchronous **FastAPI (Python)** backend, **Motor (async MongoDB)** persistence, Dockerized container runtime, and a reactive **Vite + React** interface.
 
-- **Project:** Nexus AI Chat
-- **Backend:** FastAPI (Python)
-- **Frontend:** React + Vite + TypeScript
+---
 
-## Features
+## 🌟 Key Architecture Highlights
 
-- Chat and auth endpoints (API under `/api/v1`)
-- MongoDB integration
-- Minimal Dockerfile for backend
+- **Asynchronous FastAPI Engine**: Async route handlers and SSE / streaming response generation powered by `uvicorn` and `httpx`.
+- **Async MongoDB Persistence**: Non-blocking database operations with `motor` and strict data validation using `pydantic v2`.
+- **JWT & Password Security**: Token-based authentication using `python-jose` with bcrypt cryptographic password hashing via `passlib`.
+- **Containerized Deployment**: Minimal, production-hardened `Dockerfile` for single-command container orchestration.
+- **Automated CI Validation**: Multi-stage GitHub Actions workflow validating Python code syntax and React Vite production bundles.
 
-## Repo layout
+---
 
-- `Backend/` — Python API, DB, services, models
-- `frontend/` — React + Vite UI
+## 🏗️ Repository Structure
 
-## Requirements
+```
+LLM-CHAT-APP/
+├── Backend/                 # Python FastAPI Asynchronous Service
+│   ├── app/
+│   │   ├── api/             # API routers (auth, chat, completions)
+│   │   ├── core/            # Configuration, CORS, JWT secrets
+│   │   ├── models/          # Pydantic v2 validation schemas
+│   │   ├── services/        # Asynchronous LLM client & MongoDB handlers
+│   │   └── main.py          # Application entrypoint & lifespan hooks
+│   ├── Dockerfile           # Optimized Python container image
+│   └── requirements.txt     # Pinned Python package dependencies
+│
+├── frontend/                # React 18 + Vite User Interface
+│   ├── src/                 # Chat components, state hooks, styling
+│   └── package.json
+│
+└── .github/workflows/ci.yml # GitHub Actions automated CI verification
+```
 
-- Python 3.10+ (or compatible)
-- Node.js 18+ and npm/yarn
-- MongoDB (URI available via env)
+---
 
-## Backend — Setup & Run
+## 🚀 Quickstart & Setup
 
-1. Create a virtual environment and activate it:
+### 1. Backend (Python FastAPI)
 
 ```bash
+cd Backend
+
+# Create and activate virtual environment
 python -m venv .venv
-# Windows
-.\.venv\Scripts\activate
-# macOS / Linux
-source .venv/bin/activate
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Start FastAPI application
+python -m uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-2. Install dependencies:
+- API Base URL: `http://localhost:8000/api/v1`
+- Swagger UI Documentation: `http://localhost:8000/docs`
+- Health Endpoint: `http://localhost:8000/health`
+
+### 2. Frontend (React + Vite)
 
 ```bash
-pip install -r Backend/requirements.txt
-```
-
-3. Create a `.env` file in `Backend/` (or set env vars) with values such as:
-
-- `MONGO_URI` — MongoDB connection string
-- `SECRET_KEY` — app secret for tokens
-- `CORS_ORIGINS` — JSON array or comma-separated list of allowed origins
-- any provider keys used by `llm_service.py` (e.g. OpenAI or other LLM keys)
-
-4. Start the API (from project root or `Backend/`):
-
-```bash
-# from Backend/
-python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
-```
-
-Health check: GET `http://localhost:8000/health`
-
-API prefix: `/api/v1` (see `Backend/app/api/router.py`)
-
-## Frontend — Setup & Run
-
-1. Install dependencies:
-
-```bash
-cd frontend
+cd ../frontend
 npm install
-```
-
-2. Run in development:
-
-```bash
 npm run dev
 ```
 
-3. Build for production:
+The frontend client launches at `http://localhost:5173`.
+
+### 3. Docker Deployment
 
 ```bash
-npm run build
-npm run preview
+cd Backend
+docker build -t nexus-ai-fastapi .
+docker run -p 8000:8000 --env-file .env nexus-ai-fastapi
 ```
 
-The frontend config and main entry are in `frontend/src`.
+---
 
-## Docker
+## 📄 License
 
-- There is a `Backend/Dockerfile` to containerize the API. Build and run by providing environment variables and a MongoDB connection.
-
-## Important files
-
-- `Backend/app/main.py` — application entry; sets up CORS, DB startup/shutdown, routes
-- `Backend/app/api/` — API route definitions
-- `Backend/app/services/` — auth, chat, and LLM integration logic
-- `frontend/` — React client (Vite)
-
-## Development notes
-
-- The backend exposes the API under `/api/v1` and includes a health endpoint at `/health`.
-- Configure `CORS_ORIGINS` in env for local development (e.g. `http://localhost:5173`).
-
-## Contributing
-
-- Open an issue or PR describing the change.
-- Keep changes small and focused; include tests where relevant.
-
-## License
-
-- Add an appropriate license file to the repository (e.g., MIT) if you intend to open-source.
+This project is licensed under the terms of the [MIT License](LICENSE).
